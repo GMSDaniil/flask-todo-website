@@ -1,0 +1,195 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-2">
+            <a href="{{ url_for('add_todo', id=board.id) }}" class="btn btn-primary mt-2"><svg width="25px" height="25px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g data-name="add" id="add-2"> <g> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="12" x2="12" y1="19" y2="5"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="5" x2="19" y1="12" y2="12"></line> </g> </g> </g> </g></svg></a>
+            
+        </div> 
+        <div class="col-8" style="text-align: center;" >
+            <!-- Button trigger modal -->
+            <a type="button" data-bs-toggle="modal" data-bs-target="#updateModal">
+                <h1>{{board.name}}</h1>
+            </a>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update name</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ url_for('update_dashboard', id=board.id) }}" method="post">
+                            <input class="my-input" type="text" name="name" placeholder="Name" required="required" />
+                            <button type="submit" class="btn btn-primary">
+                                Update
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="col-2 ">
+            <a  href="{{ url_for('all_dashboards')}}" class="btn btn-primary mt-2"><svg fill="#ffffff" height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.001 512.001" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M384.834,180.699c-0.698,0-348.733,0-348.733,0l73.326-82.187c4.755-5.33,4.289-13.505-1.041-18.26 c-5.328-4.754-13.505-4.29-18.26,1.041l-82.582,92.56c-10.059,11.278-10.058,28.282,0.001,39.557l82.582,92.561 c2.556,2.865,6.097,4.323,9.654,4.323c3.064,0,6.139-1.083,8.606-3.282c5.33-4.755,5.795-12.93,1.041-18.26l-73.326-82.188 c0,0,348.034,0,348.733,0c55.858,0,101.3,45.444,101.3,101.3s-45.443,101.3-101.3,101.3h-61.58 c-7.143,0-12.933,5.791-12.933,12.933c0,7.142,5.79,12.933,12.933,12.933h61.58c70.12,0,127.166-57.046,127.166-127.166 C512,237.745,454.954,180.699,384.834,180.699z"></path> </g> </g> </g></svg></a>
+            
+
+            <!-- Button trigger modal -->
+            <button style="float: right;" type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 11V17" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 11V17" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 7H12H18V18C18 19.6569 16.6569 21 15 21H9C7.34315 21 6 19.6569 6 18V7Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+            </button>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Are you sure deleting this dashboard?</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ url_for('delete_dashboard', id=board.id) }}" method="post">
+                            <button type="submit" class="btn btn-danger">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-12">
+            <ul class="list-group">
+                {% for todo in important %}
+                <li class="list-group-item list-group-item-danger">
+                    <div class="row">
+                        <div class="col-8" style="display: flex; align-items: center;">
+                            <a type="button" data-bs-toggle="modal" data-bs-target="#Modal{{todo.id}}">{{ todo.name }}</a>
+                            
+                            <div class="modal fade" id="Modal{{todo.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">{{todo.name}}</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                        {{todo.description}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <form style="float: right;" action="{{ url_for('delete_todo', board_id=board.id, todo_id=todo.id) }}" method="post">
+                                <button type="submit" class="btn btn-danger">
+                                    Delete
+                                </button>
+                            </form>
+                            <form style="float: right;" class="mx-3" action="{{ url_for('edit_todo', board_id=board.id, todo_id=todo.id) }}" method="get">
+                                <button type="submit" class="btn btn-primary">
+                                    Update
+                                </button>
+                            </form>
+                            <form style="float: right;" action="{{ url_for('complete_todo', board_id=board.id, todo_id=todo.id) }}" method="post">
+                                <button type="submit" class="btn btn-warning">
+                                    Complete
+                                </button>
+                            </form>
+                        </div>
+                    </div> 
+                </li>
+                {% endfor %}
+                {% for todo in other %}
+                <li class="list-group-item" >
+                    <div class="row">
+                        <div class="col-8" style="display: flex; align-items: center;">
+                            <a type="button" data-bs-toggle="modal" data-bs-target="#Modal{{todo.id}}">{{ todo.name }}</a>
+                            
+                            <div class="modal fade" id="Modal{{todo.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">{{todo.name}}</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                        {{todo.description}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-4">
+                            <form style="float: right;" action="{{ url_for('delete_todo', board_id=board.id, todo_id=todo.id) }}" method="post">
+                                <button type="submit" class="btn btn-danger">
+                                    Delete
+                                </button>
+                            </form>
+                            <form style="float: right;" class="mx-3" action="{{ url_for('edit_todo', board_id=board.id, todo_id=todo.id) }}" method="get">
+                                <button type="submit" class="btn btn-primary">
+                                    Update
+                                </button>
+                            </form>
+                            <form style="float: right;" action="{{ url_for('complete_todo', board_id=board.id, todo_id=todo.id) }}" method="post">
+                                <button type="submit" class="btn btn-warning">
+                                    Complete
+                                </button>
+                            </form>
+                        </div>
+                    </div>  
+                </li>
+                {% endfor %}
+                {% for todo in completed %}
+                <li class="list-group-item list-group-item-secondary" style="text-decoration: line-through;">
+                    <div class="row">
+                        <div class="col-8" style="display: flex; align-items: center;">
+                            <a type="button" data-bs-toggle="modal" data-bs-target="#Modal{{todo.id}}">{{ todo.name }}</a>
+                            
+                            <div class="modal fade" id="Modal{{todo.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">{{todo.name}}</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                        {{todo.description}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-4">
+                            <form style="float: right;" action="{{ url_for('delete_todo', board_id=board.id, todo_id=todo.id) }}" method="post">
+                                <button type="submit" class="btn btn-danger">
+                                    Delete
+                                </button>
+                            </form>
+                            <form style="float: right;" class="mx-3" action="{{ url_for('edit_todo', board_id=board.id, todo_id=todo.id) }}" method="get">
+                                <button type="submit" class="btn btn-primary">
+                                    Update
+                                </button>
+                            </form>
+                            <form style="float: right;" action="{{ url_for('complete_todo', board_id=board.id, todo_id=todo.id) }}" method="post">
+                                <button type="submit" class="btn btn-warning">
+                                    Return
+                                </button>
+                            </form>
+                        </div>
+                    </div> 
+                    
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

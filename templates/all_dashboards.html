@@ -1,0 +1,50 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="container mt-5 text-center">
+    <h1 class="mb-2">Your Dashboards</h1>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Add dashboard
+    </button>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add dashboard</h5>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('add_dashboard') }}" method="post">
+                    <input class="my-input" type="text" name="name" placeholder="Name" required="required" />
+                    <button type="submit" class="btn btn-primary">
+                        Add
+                    </button>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="row">
+        {% for board in boards %}
+            <div class="col-3 mb-3">
+                <div class="card" style="width: 15rem; background: rgba(255, 255, 255, 0.7);">
+                    <!-- <img src="..." class="card-img-top" alt="..."> -->
+                    <div class="card-body">
+                      <h5 class="card-title" >{{ board.name }}</h5>
+                      <a href="{{ url_for('dashboard', id=board.id) }}" class="btn btn-primary stretched-link" style="opacity: 0;"></a>
+                    </div>
+                  </div>
+                
+            </div>
+
+        {% endfor %}
+    </div>
+    <div class="row mb-5">
+        <div class="col-12 text-center ">
+            
+        </div>
+    </div>
+</div>
+
+{% endblock %}
